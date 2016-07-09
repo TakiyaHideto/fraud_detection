@@ -1,0 +1,21 @@
+package original_log;
+option java_package="com.mr.protobuffer";
+option java_outer_classname="OriginalWinLog";
+message WinNoticeLogMessage {
+	// 日志版本号: 1.0
+	optional string version = 1;
+	// 日志写下时刻的时间戳
+	optional uint64 timestamp = 2;
+	// 日志 id,每一条收到的日志有一个唯一的 id
+	optional string id = 3;
+	// 包含 winnotice 传来的参数,具体格式参考 winnotice 串格式,
+	// 示 例 ：aid=xx&oid=xxx&cid=xxx&custid=xxx&sid=xxx&adx_id=xxx&adx_bid=xxx&settle_price=xxx，注意settle_price的单位是10-8元，使用long类型保存，int类型可能会溢出
+	// 具体参数描述见 winnotice 串参数说明。
+	optional string data = 4;
+	// user ip
+	optional string user_ip = 5;
+	// user agent
+	optional string user_agent = 6;
+	// refer url
+	optional string refer_url = 7;
+}

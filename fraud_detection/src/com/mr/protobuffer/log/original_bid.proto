@@ -1,0 +1,350 @@
+package original_log;
+option java_package="com.mr.protobuffer";
+option java_outer_classname="OriginalBidLog";
+message Exchange {
+
+	/* ad exchange id */
+	required string adx_id = 1;
+
+	/* ad exchange bid id */
+	required string adx_bid_id = 2;
+
+	/* 以下为扩展信息 */
+	/* exchange传递过来的站点分类 */
+	repeated string url_site_category = 3;
+
+	/* exchange传递过来的网页内容分类  */
+	repeated string url_content_category= 4;
+
+	/* exchange传递过来的人群标签 */
+	repeated string crowd_tags = 5;
+
+	/* exchange传递过来的性别标签 */
+	optional string exchange_gender = 6;
+
+	/* exchange传递过来的app 分类  */
+	repeated string app_category = 7;
+
+}
+
+
+message User {
+
+	/* exchange cookie， 无线时使用device_id */
+	optional string user_exid = 1;
+
+	/* yoyi cookie. 无线时使用user_exid */
+	optional string user_yyid = 2;
+
+	/* 用户ip地址 */
+	optional string user_ip = 3;
+
+	/* 用户地域id */
+	optional string user_area = 4;
+
+	/* 浏览器信息 */
+	optional string user_agent = 5;
+
+	/*
+	 * 人群标签来源
+	 * 1: exchange
+	 * 2: yoyi
+	 */
+	optional uint32 user_crowd_tag_from = 7;
+
+	/* 性别. 1: 男;  2: 女 ; */
+	optional uint32 user_gender = 6 [default = 0];
+
+	/* 人群标签， */
+	repeated string user_crowd_tags = 8;
+
+}
+
+message Adzone {
+
+	/* 广告位id */
+	required string adzone_id = 1;
+
+	/* 广告位的尺寸，“宽*高” */
+	optional string adzone_height = 2;
+
+	/*
+	 * 广告位类型
+	 * 1: banner; 2: video;
+	 * 3: wap_banner; 4: wap_video;
+	 * 5: inapp_banner; 6: inapp_video; 7 inapp_native
+	 */
+	optional uint32 adzone_type = 3;
+
+	/* 广告位需要的广告个数  */
+	optional uint32 adzone_ad_count = 5;
+
+	/*
+	 * 广告位位置
+	 * 1: 首屏
+	 * 2: 非首屏
+	 */
+	optional uint32 adzone_position = 6;
+
+	/* 广告位要求的最低出价  */
+	optional uint32 adzone_reserve_price = 7;
+
+	/* 广告位可见性 */
+	optional string adzone_visuability = 8;
+
+	/* 广告位要求排除的广告类目 */
+	repeated string adzone_exclude_ad_category = 9;
+
+	/* 广告位要求排除的行业类目 */
+	repeated string adzone_exclude_product_category = 10;
+
+	/* 广告位要求排除的落地页 */
+	repeated string adzone_exclude_landing_page = 11;
+
+}
+
+message Page {
+
+	/* 页面url */
+	optional string page_url = 1;
+
+	/* 页面 refer url */
+	optional string page_refer_url = 2;
+
+	/* 页面标题  */
+	optional string page_title = 3;
+
+	/* 站点分类  */
+	repeated string page_site_category = 4;
+
+	/* 内容分类   */
+	repeated string page_content_category = 5;
+
+	/* 是否 无线页面 */
+	optional bool is_wireless = 6;
+	optional WirelessExtension wireless_extension = 7;
+	/* 是否视频页面 */
+	optional bool is_video = 8;
+	optional VideoExtension video_extension = 9;
+
+	optional string page_language = 10;
+}
+
+message WirelessExtension {
+
+	/* 设备id */
+	optional string device_id = 1;
+
+	/*
+	 * 设备平台
+	 * 1: phone
+	 * 2: pad
+	 * 0: 其他
+	 */
+	optional uint32 device_platform = 2;
+
+	/* 设备操作系统
+	 * 1: ios
+	 * 2: android
+	 * 3: winphone
+	 * 0: 其他
+	 * */
+	optional uint32 device_os = 3;
+
+	/* 设备操作系统版本 */
+	optional string device_os_version = 4;
+
+	/* 设备品牌 */
+	optional string device_brand = 5;
+
+	/* 设备型号 */
+	optional string device_model = 6;
+
+	/* 设备位置。 格式 “经度，纬度” */
+	optional string device_location = 7;
+
+	/* 设备分辨率 */
+	optional string device_resolution = 8;
+
+	/*
+	 * 网络类型
+	 * 1: wifi
+	 * 2: 2g
+	 * 3: 3g
+	 * 4: 4g
+	 * 0: 其他
+	 */
+	optional uint32 network_type = 9;
+
+	/*
+	 * 网络运营商
+	 * 1: 移动
+	 * 2: 联通
+	 * 3: 电信
+	 * 0: 其他
+	 */
+	optional uint32 network_carrier = 10;
+
+	/* 是否app */
+	optional bool isapp = 11;
+
+	/* app id */
+	optional string app_id = 12;
+
+	/* app名称  */
+	optional string app_name = 13;
+
+	/* app分类 */
+	repeated string app_category = 14;
+    // 下面的字段用于离线数据分析
+    optional string imei = 15;
+    optional string idfa = 16;
+    optional string mac = 17;
+    optional string android_id = 18;
+    optional string phone_num = 19;
+}
+
+message VideoExtension {
+
+	/* 视频标题 */
+	optional string video_title = 1;
+
+	/* 视频时长  */
+	optional uint32 video_duration = 2;
+
+	/* 视频关键字  */
+	repeated string video_keywords = 3;
+
+	/*
+	 * 广告开始时间
+	 * 0: 前贴片
+	 * -1: 后贴片
+	 * 其他: 开始位置，秒为单位
+	 */
+	optional int32 video_start_time = 4;
+
+	/*
+	 * 视频广告类型
+	 * 1: flash
+	 * 2: mp4
+	 * 0: 其他
+	 */
+	optional uint32 video_ad_type = 5;
+
+	/* 视频广告最小时长 */
+	optional uint32 video_ad_min_duration = 6;
+
+	/* 视频广告最大时长 */
+	optional uint32 video_ad_max_duration = 7;
+}
+
+message Ad {
+	required string customer_id = 1;
+	required string campaign_id = 2;
+	required string order_id = 3;
+	/* 创意id，bidserver拿不到，先填空 */
+	required string ad_id = 4;
+	required uint32 ad_bid_price = 5;
+	/* 对应matching部分的queryid */
+	required uint32 ad_query_id = 6;
+	/* 算法对广告的打分 */
+	optional uint64 ad_score = 7;
+	optional string adzone_id = 8;
+	optional string deal_id = 9;
+	/* 竞价方式。 1:cpm 2:智能CPM 3:CPC */
+	optional string bid_way = 10;
+	/* 原始出价  */
+	optional uint32 ad_original_price = 11;
+}
+
+message Matching {
+	required uint32 query_id = 1;
+	optional uint32 query_type = 2;
+	optional uint32 match_level = 3;
+	optional uint32 match_type = 4;
+	optional string content = 5;
+}
+
+message PMPExtension {
+	optional string deal_id = 1;
+	/* 1: prefer_deal; 2: private_auction; 0: other */
+	optional uint32 deal_type = 2 [default = 1];
+	optional uint32 deal_price = 3 [default = 0];
+}
+message OrderRtpData {
+  optional int64 adgroup_id = 1;
+  optional string ctr=2;
+  optional string ctr_bucket=3;
+  optional string cvr=4;
+  optional string cvr_bucket=5;
+  optional uint32 ecpm = 6;
+  optional string bidder_bucket = 7;
+  optional uint32 order_goal=8;
+}
+
+message AlgoExtension {
+  optional string data = 1;
+  repeated OrderRtpData order_rtp = 2;
+}
+
+message CandidateInfo {
+	optional uint32 query_id = 1;
+	optional uint64 order_id = 2;
+	optional uint32 orig_price = 3;
+	optional uint32 ecpm = 4;
+	/* 竞价方式。 1:cpm 2:智能CPM 3:CPC */
+	optional string bid_way = 5;
+}
+
+message CandidateExt {
+  repeated CandidateInfo candidates = 1;
+}
+
+message OriginalBid {
+
+	/* 日志版本， 固定为1 */
+	required string version = 1;
+
+	/* 日志记录时间 */
+	required uint64 timestamp = 2;
+
+	/* 系统生成唯一id */
+	required string session_id = 3;
+
+	/* 日志类型
+	 * 1: 参与询价
+	 * 2: 未参与询价
+	 */
+	required string log_type = 4;
+
+	/* 流量类型
+	 * 1: pc
+	 * 2: 无线
+	 */
+	optional uint32 platform = 5;
+
+	/* Bucket信息 */
+	optional string bucket_id = 6;
+
+	/* 处理节点信息 */
+	optional string host_nodes = 7;
+
+	/* exchange相关信息 */
+	optional Exchange exchange = 8;
+	/* user相关信息 */
+	optional User user = 9;
+	/* 广告位相关信息 */
+	repeated Adzone adzone = 10;
+	/* 页面相关信息 */
+	optional Page page = 11;
+	/* 广告结果 */
+	repeated Ad ads = 12;
+	/* 匹配相关信息 */
+	repeated Matching matching = 13;
+
+	optional bool is_pmp = 14;
+	/* PMP 相关信息 */
+	repeated PMPExtension pmp_extension = 15;
+	optional AlgoExtension algo_info = 16;
+  optional CandidateExt candidate_ext = 17;
+}
